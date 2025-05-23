@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GYM CARRY</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 모달 반응형 스타일 */
+        .modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-flex-container {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .video-container {
+            flex: 0 0 400px;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+        }
+
+        .content-container {
+            flex: 1;
+        }
+
+        /* 태블릿 크기 */
+        @media screen and (max-width: 1024px) {
+            .video-container {
+                flex: 0 0 300px;
+            }
+            
+            .video-container video {
+                height: 450px;
+            }
+        }
+
+        /* 모바일 크기 */
+        @media screen and (max-width: 768px) {
+            .modal-flex-container {
+                flex-direction: column;
+            }
+            
+            .video-container {
+                flex: none;
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .video-container video {
+                height: 500px;
+            }
+            
+            .content-container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GYM CARRY</h1>
+        <p>기구를 클릭하면 자세한 사용법을 확인할 수 있습니다</p>
+    </header>
+
+    <div class="filter-container">
+        <button class="filter-button active" onclick="filterEquipment('all')">전체</button>
+        <button class="filter-button" onclick="filterEquipment('chest')">가슴운동</button>
+        <button class="filter-button" onclick="filterEquipment('back')">등운동</button>
+        <button class="filter-button" onclick="filterEquipment('arm')">팔운동</button>
+        <button class="filter-button" onclick="filterEquipment('shoulder')">어깨운동</button>
+        <button class="filter-button" onclick="filterEquipment('leg')">하체운동</button>
+        <button class="filter-button" onclick="filterEquipment('abs')">복근운동</button>
+    </div>
+
+    <div class="container">
+        <div class="equipment-grid">
+            <div class="equipment-card" onclick="openModal('legpress')" data-category="leg">
+                <div class="equipment-icon icon-legpress"></div>
+                <div class="equipment-info">
+                    <h3>레그 프레스</h3>
+                    <p>하체 근력 강화의 대표 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('benchpress')" data-category="chest">
+                <div class="equipment-icon icon-benchpress"></div>
+                <div class="equipment-info">
+                    <h3>벤치 프레스</h3>
+                    <p>가슴 운동의 기본</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('latpulldown')" data-category="back">
+                <div class="equipment-icon icon-latpulldown"></div>
+                <div class="equipment-info">
+                    <h3>랫풀다운</h3>
+                    <p>등 근육 발달을 위한 필수 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('shoulderpress')" data-category="shoulder">
+                <div class="equipment-icon icon-shoulderpress"></div>
+                <div class="equipment-info">
+                    <h3>숄더 프레스</h3>
+                    <p>어깨 근육 발달을 위한 대표적인 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('legextension')" data-category="leg">
+                <div class="equipment-icon icon-legextension"></div>
+                <div class="equipment-info">
+                    <h3>레그 익스텐션</h3>
+                    <p>대퇴사두근 집중 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('cablecrossover')" data-category="chest">
+                <div class="equipment-icon icon-cablecrossover"></div>
+                <div class="equipment-info">
+                    <h3>케이블 크로스오버</h3>
+                    <p>가슴 내측 부위 집중 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('smithMachine')" data-category="chest">
+                <div class="equipment-icon icon-smithMachine"></div>
+                <div class="equipment-info">
+                    <h3>스미스 머신</h3>
+                    <p>안전한 웨이트 트레이닝 기구</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('pecdeckfly')" data-category="chest">
+                <div class="equipment-icon icon-pecdeckfly"></div>
+                <div class="equipment-info">
+                    <h3>펙덱 플라이</h3>
+                    <p>가슴 외측 부위 집중 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('seatedrow')" data-category="back">
+                <div class="equipment-icon icon-seatedrow"></div>
+                <div class="equipment-info">
+                    <h3>시티드 로우</h3>
+                    <p>등 중앙 부위 강화 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('abcrunch')" data-category="abs">
+                <div class="equipment-icon icon-abcrunch"></div>
+                <div class="equipment-info">
+                    <h3>복근 크런치 머신</h3>
+                    <p>복근 집중 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('calfRaise')" data-category="leg">
+                <div class="equipment-icon icon-calfRaise"></div>
+                <div class="equipment-info">
+                    <h3>카프 레이즈 머신</h3>
+                    <p>종아리 근육 강화 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('bicepCurl')" data-category="arm">
+                <div class="equipment-icon icon-bicepCurl"></div>
+                <div class="equipment-info">
+                    <h3>바이셉 컬 머신</h3>
+                    <p>이두근 집중 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('tricepExtension')" data-category="arm">
+                <div class="equipment-icon icon-tricepExtension"></div>
+                <div class="equipment-info">
+                    <h3>트라이셉 익스텐션</h3>
+                    <p>삼두근 집중 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('reversePecDeck')" data-category="shoulder">
+                <div class="equipment-icon icon-pecdeckfly"></div>
+                <div class="equipment-info">
+                    <h3>리버스 팩덱 플라이</h3>
+                    <p>후면 삼각근 강화 운동</p>
+                </div>
+            </div>
+
+            <div class="equipment-card" onclick="openModal('lateralHighRow')" data-category="back">
+                <div class="equipment-icon icon-latpulldown"></div>
+                <div class="equipment-info">
+                    <h3>레터럴 하이로우</h3>
+                    <p>상부 등 근육 강화 운동</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="legpress-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('legpress')">&times;</span>
+            <h2>레그 프레스 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="레그프레스.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>레그 프레스는 하체 근력을 효과적으로 강화할 수 있는 대표적인 운동 기구입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트에 앉아 등받이에 등을 완전히 밀착시킵니다.</li>
+                            <li>발판에 발을 어깨 너비로 벌려 놓습니다.</li>
+                            <li>안전 잠금장치를 해제합니다.</li>
+                            <li>무릎을 천천히 구부렸다가 펴는 동작을 반복합니다.</li>
+                            <li>동작 시 무릎이 발끝을 넘어가지 않도록 주의합니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="benchpress-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('benchpress')">&times;</span>
+            <h2>벤치 프레스 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="벤치.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>벤치 프레스는 대흉근 발달과 상체 근력 향상에 효과적인 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>벤치에 누워 양 발을 바닥에 고정합니다.</li>
+                            <li>바벨을 어깨 너비보다 약간 넓게 잡습니다.</li>
+                            <li>바벨을 랙에서 들어올립니다.</li>
+                            <li>천천히 가슴 쪽으로 내렸다가 올립니다.</li>
+                            <li>호흡을 내쉬면서 바벨을 밀어올립니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="latpulldown-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('latpulldown')">&times;</span>
+            <h2>랫풀다운 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="랫풀.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>랫풀다운은 광배근 발달과 등 근육 강화에 효과적인 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트에 앉아 허벅지를 패드로 고정합니다.</li>
+                            <li>바를 어깨 너비보다 약간 넓게 잡습니다.</li>
+                            <li>상체를 약간 뒤로 기울입니다.</li>
+                            <li>팔꿈치를 옆구리 쪽으로 당기며 바를 내립니다.</li>
+                            <li>천천히 원위치로 돌아갑니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New equipment modals -->
+    <div id="shoulderpress-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('shoulderpress')">&times;</span>
+            <h2>숄더 프레스 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="숄더프레스.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>어깨 근육을 효과적으로 발달시키는 대표적인 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트 높이를 조절하여 손잡이가 어깨 높이에 오도록 합니다.</li>
+                            <li>등받이에 등을 붙이고 손잡이를 잡습니다.</li>
+                            <li>천천히 위로 밀어올린 후 내립니다.</li>
+                            <li>동작 시 허리가 휘지 않도록 주의합니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="chestpress-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('chestpress')">&times;</span>
+            <h2>체스트 프레스 사용법</h2>
+            <div class="equipment-icon icon-pecdeckfly" style="height: 150px; margin-bottom: 1rem;"></div>
+            <p>체스트 프레스는 가슴 근육을 효과적으로 단련하는 기구입니다.</p>
+            <div class="usage-steps">
+                <h4>올바른 사용 방법</h4>
+                <ol>
+                    <li>시트 높이를 조절하여 손잡이가 가슴 높이에 오도록 합니다.</li>
+                    <li>등받이에 등을 완전히 기대고 손잡이를 잡습니다.</li>
+                    <li>가슴 근육에 힘을 주며 앞으로 밀어냅니다.</li>
+                    <li>천천히 원위치로 돌아옵니다.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div id="legcurl-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('legcurl')">&times;</span>
+            <h2>레그 컬 사용법</h2>
+            <div class="equipment-icon icon-bicepCurl" style="height: 150px; margin-bottom: 1rem;"></div>
+            <p>레그 컬은 햄스트링을 강화하는 효과적인 운동입니다.</p>
+            <div class="usage-steps">
+                <h4>올바른 사용 방법</h4>
+                <ol>
+                    <li>엎드린 자세로 발목 패드를 조절합니다.</li>
+                    <li>골반을 패드에 고정합니다.</li>
+                    <li>발뒤꿈치로 패드를 당겨 올립니다.</li>
+                    <li>천천히 내립니다.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div id="abcrunch-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('abcrunch')">&times;</span>
+            <h2>복근 크런치 머신 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="복근.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>복근 크런치 머신은 복근을 효과적으로 단련하는 기구입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트에 앉아 발을 발판에 고정합니다.</li>
+                            <li>상체를 패드에 기대고 손잡이를 잡습니다.</li>
+                            <li>복근에 힘을 주며 상체를 앞으로 구부립니다.</li>
+                            <li>천천히 원위치로 돌아갑니다.</li>
+                            <li>호흡을 일정하게 유지하며 반복합니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="calfRaise-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('calfRaise')">&times;</span>
+            <h2>카프 레이즈 머신 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="카프레이즈.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>카프 레이즈는 종아리 근육을 강화하는 효과적인 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>어깨 패드 아래에 서서 발끝으로만 발판을 밟습니다.</li>
+                            <li>발뒤꿈치를 최대한 낮추어 시작합니다.</li>
+                            <li>발끝으로 서서 최대한 높이 올라갑니다.</li>
+                            <li>천천히 발뒤꿈치를 내립니다.</li>
+                            <li>동작을 부드럽게 반복합니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bicepCurl-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('bicepCurl')">&times;</span>
+            <h2>바이셉 컬 머신 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="바이셉.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>바이셉 컬 머신은 이두근을 효과적으로 발달시키는 기구입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트 높이를 조절하여 팔꿈치가 패드에 닿도록 합니다.</li>
+                            <li>손잡이를 자연스럽게 잡습니다.</li>
+                            <li>팔꿈치를 고정한 채로 손잡이를 들어올립니다.</li>
+                            <li>천천히 내리며 이두근의 긴장을 유지합니다.</li>
+                            <li>반동을 사용하지 않도록 주의합니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tricepExtension-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('tricepExtension')">&times;</span>
+            <h2>트라이셉 익스텐션 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="트라이셉.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>트라이셉 익스텐션은 삼두근을 효과적으로 발달시키는 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트에 앉아 등받이에 등을 붙입니다.</li>
+                            <li>상완(윗팔)을 고정하고 손잡이를 잡습니다.</li>
+                            <li>팔꿈치를 고정한 채로 아래로 밀어냅니다.</li>
+                            <li>천천히 시작 자세로 돌아옵니다.</li>
+                            <li>동작 시 팔꿈치 위치가 흔들리지 않도록 주의합니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 추가 모달 -->
+    <div id="legextension-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('legextension')">&times;</span>
+            <h2>레그 익스텐션 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="레그익스텐션.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>레그 익스텐션은 대퇴사두근을 집중적으로 단련하는 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트에 앉아 발목 패드를 조절합니다.</li>
+                            <li>무릎이 90도 각도가 되도록 시트를 조절합니다.</li>
+                            <li>발목으로 패드를 밀어 무릎을 펴줍니다.</li>
+                            <li>천천히 원위치로 돌아갑니다.</li>
+                            <li>반동을 사용하지 않고 부드럽게 반복합니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cablecrossover-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('cablecrossover')">&times;</span>
+            <h2>케이블 크로스오버 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="케이블크로스.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>케이블 크로스오버는 가슴 내측 부위를 집중적으로 단련하는 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>케이블 높이를 어깨 높이로 조절합니다.</li>
+                            <li>한 발을 앞으로 내밀고 자세를 잡습니다.</li>
+                            <li>팔꿈치를 살짝 구부린 상태로 시작합니다.</li>
+                            <li>가슴 앞에서 손을 교차시켜 당깁니다.</li>
+                            <li>천천히 원위치로 돌아갑니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="smithMachine-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('smithMachine')">&times;</span>
+            <h2>스미스 머신 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="스미스.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>스미스 머신은 안전하게 웨이트 트레이닝을 할 수 있는 기구입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>바의 높이를 조절합니다.</li>
+                            <li>안전 잠금장치를 확인합니다.</li>
+                            <li>적절한 무게를 선택합니다.</li>
+                            <li>바를 잡고 자세를 잡습니다.</li>
+                            <li>안전 잠금장치를 해제하고 운동을 시작합니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pecdeckfly-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('pecdeckfly')">&times;</span>
+            <h2>펙덱 플라이 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="팩덱.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>펙덱 플라이는 가슴 외측 부위를 집중적으로 단련하는 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트 높이를 조절하여 팔꿈치가 어깨 높이에 오도록 합니다.</li>
+                            <li>등받이에 등을 완전히 붙입니다.</li>
+                            <li>팔꿈치를 살짝 구부린 상태로 시작합니다.</li>
+                            <li>가슴 근육에 힘을 주며 팔을 모읍니다.</li>
+                            <li>천천히 원위치로 돌아갑니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="seatedrow-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('seatedrow')">&times;</span>
+            <h2>시티드 로우 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="로우.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>시티드 로우는 등 중앙 부위를 강화하는 효과적인 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트에 앉아 발을 발판에 고정합니다.</li>
+                            <li>가슴을 패드에 붙이고 손잡이를 잡습니다.</li>
+                            <li>등 근육에 힘을 주며 손잡이를 당깁니다.</li>
+                            <li>어깨를 뒤로 당기며 견갑골을 모읍니다.</li>
+                            <li>천천히 원위치로 돌아갑니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="reversePecDeck-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('reversePecDeck')">&times;</span>
+            <h2>리버스 팩덱 플라이 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="리버스팩덱.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>리버스 팩덱 플라이는 후면 삼각근을 효과적으로 발달시키는 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트 높이를 조절하여 팔꿈치가 어깨 높이에 오도록 합니다.</li>
+                            <li>가슴을 패드에 붙이고 손잡이를 잡습니다.</li>
+                            <li>팔꿈치를 살짝 구부린 상태로 시작합니다.</li>
+                            <li>어깨 뒤쪽 근육에 힘을 주며 팔을 뒤로 벌립니다.</li>
+                            <li>천천히 원위치로 돌아갑니다.</li>
+                            <li>동작 시 허리가 휘지 않도록 주의합니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lateralHighRow-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('lateralHighRow')">&times;</span>
+            <h2>레터럴 하이로우 사용법</h2>
+            <div class="modal-flex-container">
+                <div class="video-container">
+                    <video controls>
+                        <source src="레터럴하이로우.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-container">
+                    <p>레터럴 하이로우는 상부 등 근육을 효과적으로 발달시키는 운동입니다.</p>
+                    <div class="usage-steps">
+                        <h4>올바른 사용 방법</h4>
+                        <ol>
+                            <li>시트에 앉아 발을 발판에 고정합니다.</li>
+                            <li>가슴을 패드에 붙이고 손잡이를 잡습니다.</li>
+                            <li>어깨를 내리고 등 근육에 힘을 주어 시작합니다.</li>
+                            <li>팔꿈치를 옆구리 쪽으로 당기며 손잡이를 당깁니다.</li>
+                            <li>견갑골을 모으며 등 근육을 수축시킵니다.</li>
+                            <li>천천히 원위치로 돌아갑니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
