@@ -1,3 +1,11 @@
+  const emoji = document.getElementById("emoji-cursor");
+
+  document.addEventListener("mousemove", (e) => {
+    emoji.style.left = e.clientX + "px";
+    emoji.style.top = e.clientY + "px";
+  });
+
+
 // 모달 열기 함수
 function openModal(equipment) {
     document.getElementById(equipment + '-modal').style.display = 'block';
