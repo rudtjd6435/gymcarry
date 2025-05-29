@@ -1,9 +1,11 @@
+  
   const emoji = document.getElementById("emoji-cursor");
 
   document.addEventListener("mousemove", (e) => {
     emoji.style.left = e.clientX + "px";
     emoji.style.top = e.clientY + "px";
   });
+
 
 
 // 모달 열기 함수
@@ -41,6 +43,13 @@ function filterEquipment(category) {
             card.style.display = cardCategory === category ? 'block' : 'none';
         }
     });
+}
+// 모달 열기 시 페이드 인 
+function openModal(id) {
+  $(`#${id}-modal`).fadeIn(400);
+}
+function closeModal(id) {
+  $(`#${id}-modal`).fadeOut(300);
 }
 
 // 모바일 메뉴 토글
