@@ -46,10 +46,10 @@ function filterEquipment(category) {
 }
 // 모달 열기 시 페이드 인 
 function openModal(id) {
-  $(`#${id}-modal`).fadeIn(400);
+  $(`#${id}-modal`).fadeIn(500);
 }
 function closeModal(id) {
-  $(`#${id}-modal`).fadeOut(300);
+  $(`#${id}-modal`).fadeOut(500);
 }
 
 // 모바일 메뉴 토글
