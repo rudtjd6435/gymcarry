@@ -46,21 +46,11 @@
 
         /* 모바일 크기 */
         @media screen and (max-width: 768px) {
-
- #emoji-cursor {
-    display: none;
-  }
-  .header-text {
-    padding: 1.5rem;
-  }
-
-  .header-text h1 {
-    font-size: 2rem;
-  }
-
-  .header-text p {
-    font-size: 1rem;
-  }
+            
+             #emoji-cursor {
+                display: none;
+            }
+            
             .modal-flex-container {
                 flex-direction: column;
             }
@@ -83,18 +73,20 @@
     </style>
 </head>
 <body>
-<div id="emoji-cursor">🏋️‍♂️</div>
-
+ 
+  <div id="emoji-cursor">🏋️‍♂️</div>
+    
    <header>
   <video autoplay muted loop playsinline>
     <source src="135160-761273559_small.mp4" type="video/mp4">
+    브라우저가 영상을 지원하지 않습니다.
   </video>
   <div class="header-text">
     <h1>GYM CARRY</h1>
     <p>기구를 클릭하면 자세한 사용법을 확인할 수 있습니다</p>
   </div>
 </header>
-    
+
 
     <div class="filter-container">
         <button class="filter-button active" onclick="filterEquipment('all')">전체</button>
@@ -676,5 +668,11 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<footer>
+  &copy; 2025 GYM CARRY. All rights reserved.
+</footer>
+
 </body>
 </html>
+
